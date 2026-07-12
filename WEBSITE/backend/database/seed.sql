@@ -7,7 +7,7 @@
 -- APP SETTINGS
 -- ============================================================
 INSERT INTO app_settings (depot_name, currency, distance_unit)
-VALUES ('TransitOps Central Depot', 'USD', 'km');
+VALUES ('TransitOps Central Depot', 'INR', 'km');
 
 -- ============================================================
 -- USERS (password: demo123 — bcrypt hash placeholder)

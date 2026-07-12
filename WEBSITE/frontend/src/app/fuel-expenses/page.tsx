@@ -21,7 +21,7 @@ import {
 import type { Role, Vehicle, FuelLog, Expense, Trip, MaintenanceLog } from "@/types";
 
 export default function FuelExpensesPage() {
-  const { user } = useAuth();
+  const { user, currencySymbol } = useAuth();
   const canEditExpenses = canEdit(user?.role as Role, "fuel-expenses");
 
   const [fuelLogs, setFuelLogs] = useState<FuelLog[]>([]);
@@ -184,15 +184,13 @@ export default function FuelExpensesPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <KpiCard
           label="Total Fuel Cost"
-          value={totalFuelCost}
+          value={`${currencySymbol}${totalFuelCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
           icon={Fuel}
-          prefix="$"
         />
         <KpiCard
           label="Completed Maintenance Cost"
-          value={totalMaintenanceCost}
+          value={`${currencySymbol}${totalMaintenanceCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
           icon={DollarSign}
-          prefix="$"
         />
         <div className="rounded-lg border p-5" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
           <div className="flex justify-between items-start">
@@ -201,10 +199,10 @@ export default function FuelExpensesPage() {
                 Derived Operational Cost
               </p>
               <h3 className="text-2xl font-semibold mt-1">
-                ${derivedOperationalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                {currencySymbol}{derivedOperationalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </h3>
               <p className="text-[10px] mt-2" style={{ color: "var(--text-muted)" }}>
-                Formula: Fuel (${totalFuelCost.toFixed(2)}) + Maintenance (${totalMaintenanceCost.toFixed(2)})
+                Formula: Fuel ({currencySymbol}{totalFuelCost.toFixed(2)}) + Maintenance ({currencySymbol}{totalMaintenanceCost.toFixed(2)})
               </p>
             </div>
             <div className="p-2 rounded bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200">
@@ -250,7 +248,7 @@ export default function FuelExpensesPage() {
                       </td>
                       <td className="py-2.5">{new Date(log.log_date).toLocaleDateString()}</td>
                       <td className="py-2.5">{Number(log.liters).toFixed(2)} L</td>
-                      <td className="px-4 py-2.5 font-semibold">${Number(log.cost).toFixed(2)}</td>
+                      <td className="px-4 py-2.5 font-semibold">{currencySymbol}{Number(log.cost).toFixed(2)}</td>
                     </motion.tr>
                   ))}
                 </tbody>
@@ -299,9 +297,9 @@ export default function FuelExpensesPage() {
                         )}
                       </td>
                       <td className="py-2.5 text-xs text-neutral-500">
-                        ${Number(expense.toll).toFixed(2)} / ${Number(expense.other).toFixed(2)} / ${Number(expense.linked_maintenance_cost).toFixed(2)}
+                        {currencySymbol}{Number(expense.toll).toFixed(2)} / {currencySymbol}{Number(expense.other).toFixed(2)} / {currencySymbol}{Number(expense.linked_maintenance_cost).toFixed(2)}
                       </td>
-                      <td className="py-2.5 font-semibold">${Number(expense.total ?? 0).toFixed(2)}</td>
+                      <td className="py-2.5 font-semibold">{currencySymbol}{Number(expense.total ?? 0).toFixed(2)}</td>
                       <td className="px-4 py-2.5">
                         <StatusPill status={expense.status} />
                       </td>
@@ -349,7 +347,7 @@ export default function FuelExpensesPage() {
               />
             </div>
             <div className="col-span-1">
-              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Cost ($)</label>
+              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Cost ({currencySymbol})</label>
               <input
                 type="number"
                 required
@@ -424,7 +422,7 @@ export default function FuelExpensesPage() {
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Toll Fee ($)</label>
+              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Toll Fee ({currencySymbol})</label>
               <input
                 type="number"
                 min="0"
@@ -437,7 +435,7 @@ export default function FuelExpensesPage() {
               />
             </div>
             <div>
-              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Other Fee ($)</label>
+              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Other Fee ({currencySymbol})</label>
               <input
                 type="number"
                 min="0"
@@ -450,7 +448,7 @@ export default function FuelExpensesPage() {
               />
             </div>
             <div>
-              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Maintenance Link ($)</label>
+              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Maintenance Link ({currencySymbol})</label>
               <input
                 type="number"
                 min="0"

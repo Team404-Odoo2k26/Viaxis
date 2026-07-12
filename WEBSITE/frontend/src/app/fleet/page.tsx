@@ -12,7 +12,7 @@ import { fetchVehicles, createVehicle } from "@/utils/api";
 import type { Role, Vehicle } from "@/types";
 
 export default function FleetPage() {
-  const { user } = useAuth();
+  const { user, currencySymbol } = useAuth();
   const canEditFleet = canEdit(user?.role as Role, "fleet");
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
@@ -92,7 +92,7 @@ export default function FleetPage() {
                   <td className="py-3">{v.type}</td>
                   <td className="py-3">{v.capacity_kg} kg</td>
                   <td className="py-3">{Number(v.odometer).toLocaleString()}</td>
-                  <td className="py-3">${Number(v.acquisition_cost).toLocaleString()}</td>
+                  <td className="py-3">{currencySymbol}{Number(v.acquisition_cost).toLocaleString()}</td>
                   <td className="py-3"><StatusPill status={v.status} /></td>
                 </motion.tr>
               ))}

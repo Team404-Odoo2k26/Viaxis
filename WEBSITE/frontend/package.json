@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:setup": "psql -U postgres -f database/schema.sql && psql -U postgres -d transitops -f database/seed.sql"
+    "db:setup": "psql -U postgres -f ../backend/database/schema.sql && psql -U postgres -d transitops -f ../backend/database/seed.sql"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.2",

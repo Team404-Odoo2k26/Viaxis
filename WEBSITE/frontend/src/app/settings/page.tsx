@@ -8,6 +8,8 @@ import { RBAC_MATRIX, getPermissions } from "@/lib/rbac";
 import type { Module, Permission } from "@/lib/rbac";
 import type { Role } from "@/types";
 
+import { useAuth } from "@/context/AuthContext";
+
 const MODULE_LABELS: Record<string, string> = {
   dashboard: "Dashboard",
   fleet: "Fleet",
@@ -23,7 +25,8 @@ const ROLES: Role[] = ["Fleet Manager", "Dispatcher", "Safety Officer", "Financi
 const MODULES: Module[] = ["dashboard", "fleet", "drivers", "trips", "maintenance", "fuel-expenses", "analytics", "settings"];
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState({ depot_name: "", currency: "USD", distance_unit: "km" });
+  const { refreshSettings } = useAuth();
+  const [settings, setSettings] = useState({ depot_name: "", currency: "INR", distance_unit: "km" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
@@ -34,7 +37,7 @@ export default function SettingsPage() {
         if (data) {
           setSettings({
             depot_name: data.depot_name || "",
-            currency: data.currency || "USD",
+            currency: data.currency || "INR",
             distance_unit: data.distance_unit || "km",
           });
         }
@@ -48,6 +51,7 @@ export default function SettingsPage() {
     setMessage("");
     try {
       await updateSettings(settings);
+      await refreshSettings();
       setMessage("Settings saved successfully.");
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {

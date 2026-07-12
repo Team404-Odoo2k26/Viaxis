@@ -12,7 +12,7 @@ import { fetchMaintenance, createMaintenance, updateMaintenance, fetchVehicles }
 import type { Role, Vehicle, MaintenanceLog } from "@/types";
 
 export default function MaintenancePage() {
-  const { user } = useAuth();
+  const { user, currencySymbol } = useAuth();
   const canEditMaint = canEdit(user?.role as Role, "maintenance");
   const [logs, setLogs] = useState<MaintenanceLog[]>([]);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -123,7 +123,7 @@ export default function MaintenancePage() {
                     </span>
                   </td>
                   <td className="px-4 py-3">{log.service_type}</td>
-                  <td className="px-4 py-3">${Number(log.cost).toLocaleString()}</td>
+                  <td className="px-4 py-3">{currencySymbol}{Number(log.cost).toLocaleString()}</td>
                   <td className="px-4 py-3">{new Date(log.service_date).toLocaleDateString()}</td>
                   <td className="px-4 py-3">
                     <StatusPill status={log.status} />
@@ -185,7 +185,7 @@ export default function MaintenancePage() {
               />
             </div>
             <div>
-              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Cost ($)</label>
+              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Cost ({currencySymbol})</label>
               <input
                 type="number"
                 required
