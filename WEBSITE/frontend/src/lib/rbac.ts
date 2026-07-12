@@ -18,7 +18,7 @@ const RBAC_MATRIX: Record<Role, Record<Module, Permission>> = {
     fleet: "edit",
     drivers: "edit",
     trips: "view",
-    maintenance: "view",
+    maintenance: "edit",
     "fuel-expenses": "view",
     analytics: "view",
     settings: "view",

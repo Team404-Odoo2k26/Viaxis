@@ -67,6 +67,9 @@ export interface MaintenanceLog {
   service_date: string;
   status: MaintenanceStatus;
   notes: string | null;
+  registration_no?: string;
+  name_model?: string;
+  vehicle_status?: VehicleStatus;
   vehicle?: Vehicle;
 }
 
@@ -76,6 +79,8 @@ export interface FuelLog {
   log_date: string;
   liters: number;
   cost: number;
+  registration_no?: string;
+  name_model?: string;
   vehicle?: Vehicle;
 }
 
@@ -89,6 +94,9 @@ export interface Expense {
   total?: number;
   status: ExpenseStatus;
   notes: string | null;
+  registration_no?: string;
+  source?: string;
+  destination?: string;
 }
 
 export interface AppSettings {
