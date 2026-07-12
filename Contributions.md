@@ -8,13 +8,15 @@ This document tracks each team member's responsibilities and work done throughou
 
 ## Team Members
 
-| Name | Role | GitHub |
-| ---- | ---- | ------ |
-| TBD  | TBD  | @TBD   |
+| Name | Role | Email | GitHub |
+| ---- | ---- | ----- | ------ |
+| Ahad Dangarvawala | Security focused full stack engineer | ahaddangarvawala@gmail.com | @ahad |
 
 ---
 
 ## Work Breakdown
+
+> *(To be filled in as work progresses)*
 
 ### Authentication & RBAC
 - [x] Login page implementation with invalid attempts lockout logic.
