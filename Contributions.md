@@ -10,10 +10,10 @@ This document tracks each team member's responsibilities and work done throughou
 
 | Name | Role | Email | GitHub |
 | ---- | ---- | ----- | ------ |
-| Ahad Dangarvawala | Security focused full stack engineer | ahaddangarvawala@gmail.com | @ahadd |
-| Dhruv Gohel | Frontend Engineer | | @dhruvgohel |
-| Vishmayraj Zala | Backend / API Engineer | | @vishmayraj |
-| Varun Kushwaha | UI/UX & Full Stack Engineer | | @varunkushwaha |
+| Ahad Dangarvawala | Security focused full stack | ahaddangarvawala@gmail.com | @ahadd |
+| Dhruv Gohel | Full stack | | @dhruvgohel |
+| Vishmayraj Zala | AI/ML | | @vishmayraj |
+| Varun Kushwaha | Backend / API Engineer | | @varunkushwaha |
 
 ---
 
