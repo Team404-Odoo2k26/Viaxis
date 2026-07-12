@@ -8,7 +8,7 @@ echo [INFO] Checking prerequisites...
 where node >nul 2>nul
 if %ERRORLEVEL% neq 0 (
     echo.
-    echo  [31m[ERROR] Node.js is not installed or not in PATH. Please install Node.js v22+.[0m
+    echo [ERROR] Node.js is not installed or not in PATH. Please install Node.js v22+.
     exit /b 1
 )
 
@@ -16,7 +16,7 @@ if %ERRORLEVEL% neq 0 (
 where npm >nul 2>nul
 if %ERRORLEVEL% neq 0 (
     echo.
-    echo  [31m[ERROR] npm is not installed or not in PATH. Please install npm v10+.[0m
+    echo [ERROR] npm is not installed or not in PATH. Please install npm v10+.
     exit /b 1
 )
 
@@ -28,7 +28,7 @@ if %ERRORLEVEL% neq 0 (
     exit /b 1
 )
 
-echo  [32m[SUCCESS] All prerequisites are installed![0m
+echo [SUCCESS] All prerequisites are installed!
 echo.
 
 :: Check backend .env
@@ -52,9 +52,9 @@ call npm install
 cd ..\..
 
 echo.
-echo [32m=====================================[0m
-echo [32m  Setup Completed Successfully!      [0m
-echo [32m=====================================[0m
+echo =====================================
+echo   Setup Completed Successfully!      
+echo =====================================
 echo.
 
 echo [COMMANDS] To run the backend, open a terminal and run:
