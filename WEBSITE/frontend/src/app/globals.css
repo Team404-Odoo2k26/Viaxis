@@ -45,3 +45,54 @@ body {
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
+
+/* Color scheme matching for native controls like calendar pickers */
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+/* Custom WebKit Date Picker styles to match the dark theme */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0%);
+  transition: filter 0.2s ease;
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(100%);
+}
+
+@media print {
+  /* Hide sidebar and UI controls in print view */
+  aside,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Expand main container to fill full page */
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  /* Reset main wrapper padding inside AppShell */
+  main > div {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Ensure background and text color are print friendly */
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+}

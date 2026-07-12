@@ -19,6 +19,8 @@ import {
   fetchMaintenance
 } from "@/utils/api";
 import type { Role, Vehicle, FuelLog, Expense, Trip, MaintenanceLog } from "@/types";
+import { DROPDOWN_CLASS, DROPDOWN_STYLE } from "@/utils/dropdown";
+import { CALENDAR_CLASS, CALENDAR_STYLE } from "@/utils/calendar";
 
 export default function FuelExpensesPage() {
   const { user, currencySymbol } = useAuth();
@@ -227,7 +229,8 @@ export default function FuelExpensesPage() {
                     <th className="text-left px-4 py-2 font-medium">Vehicle</th>
                     <th className="text-left py-2 font-medium">Log Date</th>
                     <th className="text-left py-2 font-medium">Liters</th>
-                    <th className="text-left px-4 py-2 font-medium">Cost</th>
+                    <th className="text-left py-2 font-medium">Cost</th>
+                    <th className="text-left px-4 py-2 font-medium">Source / Trip</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -248,7 +251,25 @@ export default function FuelExpensesPage() {
                       </td>
                       <td className="py-2.5">{new Date(log.log_date).toLocaleDateString()}</td>
                       <td className="py-2.5">{Number(log.liters).toFixed(2)} L</td>
-                      <td className="px-4 py-2.5 font-semibold">{currencySymbol}{Number(log.cost).toFixed(2)}</td>
+                      <td className="py-2.5 font-semibold">{currencySymbol}{Number(log.cost).toFixed(2)}</td>
+                      <td className="px-4 py-2.5">
+                        {log.source === "Trip Stop" ? (
+                          <div>
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400">
+                              Trip Stop
+                            </span>
+                            {log.trip_source && log.trip_destination && (
+                              <span className="block text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>
+                                {log.trip_source} → {log.trip_destination}
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
+                            Manual
+                          </span>
+                        )}
+                      </td>
                     </motion.tr>
                   ))}
                 </tbody>
@@ -315,14 +336,15 @@ export default function FuelExpensesPage() {
       {/* Log Fuel Modal */}
       <Modal open={fuelModalOpen} onClose={() => setFuelModalOpen(false)} title="Log Fuel Purchase">
         <form onSubmit={handleFuelSubmit} className="space-y-3">
+          <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>* Indicates required fields</p>
           <div>
-            <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Vehicle</label>
+            <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Vehicle<span className="text-red-500 ml-0.5">*</span></label>
             <select
               required
               value={fuelForm.vehicle_id}
               onChange={(e) => setFuelForm({ ...fuelForm, vehicle_id: e.target.value })}
-              className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent outline-none"
-              style={{ borderColor: "var(--border)" }}
+              className={DROPDOWN_CLASS}
+              style={DROPDOWN_STYLE}
             >
               <option value="">Select vehicle</option>
               {vehicles.map((v) => (
@@ -333,7 +355,7 @@ export default function FuelExpensesPage() {
 
           <div className="grid grid-cols-3 gap-3">
             <div className="col-span-1">
-              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Liters</label>
+              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Liters<span className="text-red-500 ml-0.5">*</span></label>
               <input
                 type="number"
                 required
@@ -347,7 +369,7 @@ export default function FuelExpensesPage() {
               />
             </div>
             <div className="col-span-1">
-              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Cost ({currencySymbol})</label>
+              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Cost ({currencySymbol})<span className="text-red-500 ml-0.5">*</span></label>
               <input
                 type="number"
                 required
@@ -361,14 +383,14 @@ export default function FuelExpensesPage() {
               />
             </div>
             <div className="col-span-1">
-              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Date</label>
+              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Date<span className="text-red-500 ml-0.5">*</span></label>
               <input
                 type="date"
                 required
                 value={fuelForm.log_date}
                 onChange={(e) => setFuelForm({ ...fuelForm, log_date: e.target.value })}
-                className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent outline-none"
-                style={{ borderColor: "var(--border)" }}
+                className={CALENDAR_CLASS}
+                style={CALENDAR_STYLE}
               />
             </div>
           </div>
@@ -395,8 +417,8 @@ export default function FuelExpensesPage() {
               <select
                 value={expenseForm.trip_id}
                 onChange={(e) => setExpenseForm({ ...expenseForm, trip_id: e.target.value })}
-                className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent outline-none"
-                style={{ borderColor: "var(--border)" }}
+                className={DROPDOWN_CLASS}
+                style={DROPDOWN_STYLE}
               >
                 <option value="">None / Independent</option>
                 {trips.map((t) => (
@@ -409,8 +431,8 @@ export default function FuelExpensesPage() {
               <select
                 value={expenseForm.vehicle_id}
                 onChange={(e) => setExpenseForm({ ...expenseForm, vehicle_id: e.target.value })}
-                className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent outline-none"
-                style={{ borderColor: "var(--border)" }}
+                className={DROPDOWN_CLASS}
+                style={DROPDOWN_STYLE}
               >
                 <option value="">None / General</option>
                 {vehicles.map((v) => (

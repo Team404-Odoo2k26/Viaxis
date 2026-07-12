@@ -7,7 +7,7 @@ import AppShell from "@/components/AppShell";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "TransitOps — Smart Transport Operations",
+  title: "ViAxis — Smart Transport Operations",
   description: "Fleet management, dispatch, maintenance, and analytics platform",
 };
 

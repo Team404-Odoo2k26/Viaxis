@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { BarChart3, Download, FileText, Fuel, Percent, TrendingUp, AlertTriangle } from "lucide-react";
 import KpiCard from "@/components/KpiCard";
 import EmptyState from "@/components/EmptyState";
@@ -29,7 +29,7 @@ export default function AnalyticsPage() {
     if (!data) return;
 
     let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "TransitOps System Report\n\n";
+    csvContent += "ViAxis System Report\n\n";
 
     // KPIs
     csvContent += "KEY PERFORMANCE INDICATORS\n";
@@ -56,7 +56,7 @@ export default function AnalyticsPage() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `transitops_analytics_${new Date().toISOString().split("T")[0]}.csv`);
+    link.setAttribute("download", `viaxis_analytics_${new Date().toISOString().split("T")[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -116,7 +116,7 @@ export default function AnalyticsPage() {
 
       {/* PDF Print-Only Header */}
       <div className="hidden print:block border-b pb-4 mb-6">
-        <h1 className="text-3xl font-bold">TransitOps — System Report</h1>
+        <h1 className="text-3xl font-bold">ViAxis — System Report</h1>
         <p className="text-xs text-neutral-500 mt-1">Generated on {new Date().toLocaleString()}</p>
       </div>
 
@@ -170,8 +170,9 @@ export default function AnalyticsPage() {
                 No completed trip revenue to display.
               </div>
             ) : (
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data.monthly_revenue} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+               <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={data.monthly_revenue} margin={{ top: 20, right: 20, left: -20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={true} horizontal={false} stroke="var(--border)" />
                   <XAxis
                     dataKey="month"
                     stroke="var(--text-muted)"
@@ -187,7 +188,6 @@ export default function AnalyticsPage() {
                     tickFormatter={(v) => `${currencySymbol}${v}`}
                   />
                   <Tooltip
-                    cursor={{ fill: "var(--surface-2)" }}
                     contentStyle={{
                       background: "var(--bg)",
                       borderColor: "var(--border)",
@@ -197,12 +197,16 @@ export default function AnalyticsPage() {
                     }}
                     formatter={(value) => [`${currencySymbol}${Number(value).toLocaleString()}`, "Revenue"]}
                   />
-                  <Bar dataKey="revenue" radius={[4, 4, 0, 0]}>
-                    {data.monthly_revenue.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill="var(--accent)" />
-                    ))}
-                  </Bar>
-                </BarChart>
+                  <Line
+                    type="linear"
+                    dataKey="revenue"
+                    stroke="var(--accent)"
+                    strokeWidth={2}
+                    dot={{ r: 4.5, stroke: "var(--accent)", strokeWidth: 2, fill: "var(--bg)" }}
+                    activeDot={{ r: 6.5 }}
+                    isAnimationActive={false}
+                  />
+                </LineChart>
               </ResponsiveContainer>
             )}
           </div>

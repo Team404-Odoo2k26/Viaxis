@@ -9,6 +9,7 @@ import type { Module, Permission } from "@/lib/rbac";
 import type { Role } from "@/types";
 
 import { useAuth } from "@/context/AuthContext";
+import { DROPDOWN_CLASS, DROPDOWN_STYLE } from "@/utils/dropdown";
 
 const MODULE_LABELS: Record<string, string> = {
   dashboard: "Dashboard",
@@ -99,8 +100,8 @@ export default function SettingsPage() {
               <select
                 value={settings.currency}
                 onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
-                className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent outline-none"
-                style={{ borderColor: "var(--border)" }}
+                className={DROPDOWN_CLASS}
+                style={DROPDOWN_STYLE}
               >
                 <option value="USD">USD ($)</option>
                 <option value="EUR">EUR (€)</option>
@@ -113,8 +114,8 @@ export default function SettingsPage() {
               <select
                 value={settings.distance_unit}
                 onChange={(e) => setSettings({ ...settings, distance_unit: e.target.value })}
-                className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent outline-none"
-                style={{ borderColor: "var(--border)" }}
+                className={DROPDOWN_CLASS}
+                style={DROPDOWN_STYLE}
               >
                 <option value="km">Kilometers (km)</option>
                 <option value="mi">Miles (mi)</option>

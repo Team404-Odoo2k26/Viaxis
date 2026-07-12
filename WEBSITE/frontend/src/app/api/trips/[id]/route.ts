@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { queryOne } from "@/lib/db";
+import { query, queryOne } from "@/lib/db";
 
 export async function PATCH(
   req: NextRequest,
@@ -80,6 +80,21 @@ export async function PATCH(
     if (trip.driver_id) {
       await queryOne("UPDATE drivers SET status = 'Available' WHERE id = $1", [trip.driver_id]);
     }
+
+    // Auto-log each fuel stop into fuel_logs table
+    const fuelStops: { liters: number; cost: number }[] = body.fuel_stops ?? [];
+    if (fuelStops.length > 0 && trip.vehicle_id) {
+      for (const stop of fuelStops) {
+        if (stop.liters > 0 && stop.cost >= 0) {
+          await query(
+            `INSERT INTO fuel_logs (vehicle_id, trip_id, log_date, liters, cost, source)
+             VALUES ($1, $2, CURRENT_DATE, $3, $4, 'Trip Stop')`,
+            [trip.vehicle_id, id, stop.liters, stop.cost]
+          );
+        }
+      }
+    }
+
     return NextResponse.json(updated);
   }
 
@@ -105,11 +120,13 @@ export async function PATCH(
       driver_id = COALESCE($4, driver_id),
       cargo_weight_kg = COALESCE($5, cargo_weight_kg),
       planned_distance_km = COALESCE($6, planned_distance_km),
-      notes = COALESCE($7, notes)
-     WHERE id = $8 RETURNING *`,
+      starting_fuel = COALESCE($7, starting_fuel),
+      revenue = COALESCE($8, revenue),
+      notes = COALESCE($9, notes)
+     WHERE id = $10 RETURNING *`,
     [
       body.source, body.destination, body.vehicle_id, body.driver_id,
-      body.cargo_weight_kg, body.planned_distance_km, body.notes, id,
+      body.cargo_weight_kg, body.planned_distance_km, body.starting_fuel, body.revenue, body.notes, id,
     ]
   );
   return NextResponse.json(updated);

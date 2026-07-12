@@ -124,6 +124,7 @@ CREATE TABLE trips (
   driver_id             INTEGER REFERENCES drivers(id) ON DELETE SET NULL,
   cargo_weight_kg       DECIMAL(10, 2) CHECK (cargo_weight_kg >= 0),
   planned_distance_km   DECIMAL(10, 2) CHECK (planned_distance_km >= 0),
+  starting_fuel         DECIMAL(10, 2) DEFAULT 0,
   final_odometer        DECIMAL(12, 2),
   fuel_consumed_liters  DECIMAL(10, 2),
   status                trip_status DEFAULT 'Draft',
@@ -164,9 +165,11 @@ CREATE INDEX idx_maintenance_status ON maintenance_logs(status);
 CREATE TABLE fuel_logs (
   id          SERIAL PRIMARY KEY,
   vehicle_id  INTEGER NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
+  trip_id     INTEGER REFERENCES trips(id) ON DELETE SET NULL,
   log_date    DATE NOT NULL,
   liters      DECIMAL(10, 2) NOT NULL CHECK (liters > 0),
   cost        DECIMAL(10, 2) NOT NULL CHECK (cost >= 0),
+  source      VARCHAR(50) DEFAULT 'Manual',
   created_at  TIMESTAMPTZ DEFAULT NOW()
 );
 

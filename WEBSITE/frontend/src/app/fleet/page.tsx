@@ -10,6 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 import { canEdit } from "@/lib/rbac";
 import { fetchVehicles, createVehicle } from "@/utils/api";
 import type { Role, Vehicle } from "@/types";
+import { DROPDOWN_CLASS, FILTER_DROPDOWN_CLASS, DROPDOWN_STYLE } from "@/utils/dropdown";
 
 export default function FleetPage() {
   const { user, currencySymbol } = useAuth();
@@ -62,10 +63,10 @@ export default function FleetPage() {
       <div className="flex gap-3 mb-4 flex-wrap">
         <input placeholder="Search reg. no." value={search} onChange={(e) => setSearch(e.target.value)}
           className="px-3 py-1.5 rounded-md border text-sm bg-transparent" style={{ borderColor: "var(--border)" }} />
-        <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="px-3 py-1.5 rounded-md border text-sm bg-transparent" style={{ borderColor: "var(--border)" }}>
+        <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className={FILTER_DROPDOWN_CLASS} style={DROPDOWN_STYLE}>
           <option value="">All Types</option><option>Van</option><option>Truck</option>
         </select>
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-3 py-1.5 rounded-md border text-sm bg-transparent" style={{ borderColor: "var(--border)" }}>
+        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className={FILTER_DROPDOWN_CLASS} style={DROPDOWN_STYLE}>
           <option value="">All Status</option>
           {["Available", "On Trip", "In Shop", "Retired"].map((s) => <option key={s}>{s}</option>)}
         </select>
@@ -103,30 +104,33 @@ export default function FleetPage() {
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Add Vehicle">
         <form onSubmit={handleCreate} className="space-y-3">
+          <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>* Indicates required fields</p>
           {[{ k: "registration_no", l: "Registration No." }, { k: "name_model", l: "Name/Model" }].map(({ k, l }) => (
             <div key={k}>
-              <label className="text-xs" style={{ color: "var(--text-muted)" }}>{l}</label>
+              <label className="text-xs" style={{ color: "var(--text-muted)" }}>
+                {l}<span className="text-red-500 ml-0.5">*</span>
+              </label>
               <input required value={form[k as keyof typeof form] as string} onChange={(e) => setForm({ ...form, [k]: e.target.value })}
                 className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent" style={{ borderColor: "var(--border)" }} />
             </div>
           ))}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs" style={{ color: "var(--text-muted)" }}>Type</label>
+              <label className="text-xs" style={{ color: "var(--text-muted)" }}>Type<span className="text-red-500 ml-0.5">*</span></label>
               <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
-                className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent" style={{ borderColor: "var(--border)" }}>
+                className={DROPDOWN_CLASS} style={DROPDOWN_STYLE}>
                 <option>Van</option><option>Truck</option>
               </select>
             </div>
             <div>
-              <label className="text-xs" style={{ color: "var(--text-muted)" }}>Capacity (kg)</label>
+              <label className="text-xs" style={{ color: "var(--text-muted)" }}>Capacity (kg)<span className="text-red-500 ml-0.5">*</span></label>
               <input type="number" required value={form.capacity_kg} onChange={(e) => setForm({ ...form, capacity_kg: Number(e.target.value) })}
                 className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent" style={{ borderColor: "var(--border)" }} />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs" style={{ color: "var(--text-muted)" }}>Acquisition Cost</label>
+              <label className="text-xs" style={{ color: "var(--text-muted)" }}>Acquisition Cost<span className="text-red-500 ml-0.5">*</span></label>
               <input type="number" required value={form.acquisition_cost} onChange={(e) => setForm({ ...form, acquisition_cost: Number(e.target.value) })}
                 className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent" style={{ borderColor: "var(--border)" }} />
             </div>

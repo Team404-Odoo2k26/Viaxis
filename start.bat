@@ -4,13 +4,11 @@ echo    TransitOps — Local Startup Script
 echo =========================================
 echo.
 
-echo [INFO] Starting Backend Server (Express + Prisma)...
-start cmd /k "cd WEBSITE\backend && npm run dev"
+echo [INFO] Cleaning up active processes on port 3000...
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr :3000') do taskkill /f /pid %%a >nul 2>&1
 
-echo [INFO] Starting Frontend Server (Next.js)...
-start cmd /k "cd WEBSITE\frontend && npm run dev"
-
-echo.
-echo [SUCCESS] Both servers are launching in separate windows!
-echo.
-pause
+echo [INFO] Starting Next.js App Server (Frontend + API)...
+cd WEBSITE\frontend
+echo [INFO] Wiping stale Next.js cache...
+if exist .next rd /s /q .next
+npm run build && npm start

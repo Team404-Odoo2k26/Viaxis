@@ -9,9 +9,10 @@ interface ModalProps {
   onClose: () => void;
   title: string;
   children: ReactNode;
+  sizeClassName?: string;
 }
 
-export default function Modal({ open, onClose, title, children }: ModalProps) {
+export default function Modal({ open, onClose, title, children, sizeClassName }: ModalProps) {
   return (
     <AnimatePresence>
       {open && (
@@ -28,7 +29,7 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 30 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-lg rounded-lg border p-6 shadow-xl"
+            className={`fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full rounded-lg border p-6 shadow-xl ${sizeClassName || "max-w-lg"}`}
             style={{ background: "var(--bg)", borderColor: "var(--border)" }}
           >
             <div className="flex items-center justify-between mb-4">

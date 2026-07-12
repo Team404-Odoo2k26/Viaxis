@@ -49,11 +49,11 @@ export async function POST(req: NextRequest) {
   }
 
   const trip = await queryOne(
-    `INSERT INTO trips (source, destination, vehicle_id, driver_id, cargo_weight_kg, planned_distance_km, status, eta, notes, revenue)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
+    `INSERT INTO trips (source, destination, vehicle_id, driver_id, cargo_weight_kg, planned_distance_km, starting_fuel, status, eta, notes, revenue)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
     [
       body.source, body.destination, body.vehicle_id ?? null, body.driver_id ?? null,
-      body.cargo_weight_kg, body.planned_distance_km, body.status ?? "Draft",
+      body.cargo_weight_kg, body.planned_distance_km, body.starting_fuel ?? 0, body.status ?? "Draft",
       body.eta, body.notes, body.revenue ?? 0,
     ]
   );

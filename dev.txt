@@ -1,0 +1,81 @@
+========================================================================
+                     TransitOps — Developer Guide
+========================================================================
+
+This file details all mock credentials, database configurations, and startup
+commands for local development of the TransitOps platform.
+
+------------------------------------------------------------------------
+1. Mock Login Credentials
+------------------------------------------------------------------------
+All mock users share the password: devmode123 (or demo123, depending on seed).
+In the database/seed.sql file, the password hash/placeholder is:
+  Password: demo123
+
+Available Roles:
+  * Fleet Manager:
+    - Email:    manager@transitops.com
+    - Password: demo123
+    - Name:     Sarah Chen
+    - Scope:    Full access to Fleet & Drivers modifications, Settings, and Analytics.
+
+  * Dispatcher:
+    - Email:    dispatcher@transitops.com
+    - Password: demo123
+    - Name:     Mike Johnson
+    - Scope:    Trips management (creation, dispatch, cancellation, settlement).
+
+  * Safety Officer:
+    - Email:    safety@transitops.com
+    - Password: demo123
+    - Name:     Lisa Park
+    - Scope:    Drivers updates (checking licenses, toggling suspension/availability).
+
+  * Financial Analyst:
+    - Email:    finance@transitops.com
+    - Password: demo123
+    - Name:     David Williams
+    - Scope:    Fuel logging, general expense tracking, and ROI Analytics.
+
+------------------------------------------------------------------------
+2. Database Configuration
+------------------------------------------------------------------------
+Next.js connects directly to PostgreSQL via connection settings defined in:
+  WEBSITE/frontend/.env.local
+
+Connection String (Default):
+  DATABASE_URL=postgresql://postgres@localhost:5432/transitops
+
+Prisma Schema (Prisma client generated inside node_modules):
+  WEBSITE/backend/prisma/schema.prisma
+
+------------------------------------------------------------------------
+3. Database Setup Commands
+------------------------------------------------------------------------
+To wipe the database, rebuild the tables schema, and load seed data:
+  * From WEBSITE/frontend:
+    npm run db:setup
+
+  * Or execute manually:
+    psql -U postgres -f WEBSITE/backend/database/schema.sql
+    psql -U postgres -d transitops -f WEBSITE/backend/database/seed.sql
+
+------------------------------------------------------------------------
+4. Local Dev Servers
+------------------------------------------------------------------------
+To launch the unified Next.js App Server (Frontend UI + Database API layer):
+  - On Windows: run `start.bat`
+  - On macOS/Linux: run `./start.sh`
+
+The Next.js server runs on:
+  http://localhost:3000
+
+------------------------------------------------------------------------
+5. Seed Flow Verification Scenario
+------------------------------------------------------------------------
+The initial database seed pre-loads a workflow to test:
+  1. Vehicle VAN-05 (500kg capacity) registered as Available.
+  2. Driver Alex Rivera registered as Available.
+  3. Trip #1 created as Draft -> assigned Alex + VAN-05 -> Dispatched -> Completed.
+  4. Maintenance log Oil Change created for vehicle VAN-11 -> status set to In Shop.
+  5. Expenses logged linking tolls and maintenance fees, reflected inside Analytics.

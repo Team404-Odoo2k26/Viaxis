@@ -11,6 +11,7 @@ import { canEdit } from "@/lib/rbac";
 import { isLicenseExpired } from "@/lib/business-rules";
 import { fetchDrivers, createDriver, updateDriver } from "@/utils/api";
 import type { Role, Driver, DriverStatus } from "@/types";
+import { CALENDAR_CLASS, CALENDAR_STYLE } from "@/utils/calendar";
 
 export default function DriversPage() {
   const { user } = useAuth();
@@ -101,17 +102,20 @@ export default function DriversPage() {
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Add Driver">
         <form onSubmit={handleCreate} className="space-y-3">
+          <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>* Indicates required fields</p>
           {[{ k: "name", l: "Name" }, { k: "license_no", l: "License No." }, { k: "contact", l: "Contact" }].map(({ k, l }) => (
             <div key={k}>
-              <label className="text-xs" style={{ color: "var(--text-muted)" }}>{l}</label>
+              <label className="text-xs" style={{ color: "var(--text-muted)" }}>
+                {l}{k !== "contact" && <span className="text-red-500 ml-0.5">*</span>}
+              </label>
               <input required={k !== "contact"} value={form[k as keyof typeof form]} onChange={(e) => setForm({ ...form, [k]: e.target.value })}
                 className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent" style={{ borderColor: "var(--border)" }} />
             </div>
           ))}
           <div>
-            <label className="text-xs" style={{ color: "var(--text-muted)" }}>License Expiry</label>
+            <label className="text-xs" style={{ color: "var(--text-muted)" }}>License Expiry<span className="text-red-500 ml-0.5">*</span></label>
             <input type="date" required value={form.license_expiry} onChange={(e) => setForm({ ...form, license_expiry: e.target.value })}
-              className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent" style={{ borderColor: "var(--border)" }} />
+              className={CALENDAR_CLASS} style={CALENDAR_STYLE} />
           </div>
           <motion.button whileTap={{ scale: 0.98 }} type="submit" className="w-full py-2 rounded-md text-sm font-medium text-white" style={{ background: "var(--accent)" }}>
             Save Driver

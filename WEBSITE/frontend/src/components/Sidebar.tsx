@@ -26,7 +26,7 @@ export default function Sidebar({ onOpenCommand }: { onOpenCommand?: () => void 
   return (
     <aside className="w-56 min-h-screen border-r flex flex-col" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
       <div className="p-5 border-b" style={{ borderColor: "var(--border)" }}>
-        <h1 className="text-lg font-semibold tracking-tight">TransitOps</h1>
+        <h1 className="text-lg font-semibold tracking-tight">ViAxis</h1>
         <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{user.name}</p>
       </div>
       <nav className="flex-1 p-3 space-y-0.5">

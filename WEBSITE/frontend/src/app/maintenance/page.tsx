@@ -10,6 +10,8 @@ import { useAuth } from "@/context/AuthContext";
 import { canEdit } from "@/lib/rbac";
 import { fetchMaintenance, createMaintenance, updateMaintenance, fetchVehicles } from "@/utils/api";
 import type { Role, Vehicle, MaintenanceLog } from "@/types";
+import { DROPDOWN_CLASS, DROPDOWN_STYLE } from "@/utils/dropdown";
+import { CALENDAR_CLASS, CALENDAR_STYLE } from "@/utils/calendar";
 
 export default function MaintenancePage() {
   const { user, currencySymbol } = useAuth();
@@ -154,14 +156,15 @@ export default function MaintenancePage() {
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Log Service Record">
         <form onSubmit={handleCreate} className="space-y-3">
+          <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>* Indicates required fields</p>
           <div>
-            <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Vehicle</label>
+            <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Vehicle<span className="text-red-500 ml-0.5">*</span></label>
             <select
               required
               value={form.vehicle_id}
               onChange={(e) => setForm({ ...form, vehicle_id: e.target.value })}
-              className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent outline-none focus:ring-1"
-              style={{ borderColor: "var(--border)" }}
+              className={DROPDOWN_CLASS}
+              style={DROPDOWN_STYLE}
             >
               <option value="">Select vehicle</option>
               {vehicles.map((v) => (
@@ -174,7 +177,7 @@ export default function MaintenancePage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Service Type</label>
+              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Service Type<span className="text-red-500 ml-0.5">*</span></label>
               <input
                 required
                 placeholder="e.g. Oil Change, Brake replacement"
@@ -185,7 +188,7 @@ export default function MaintenancePage() {
               />
             </div>
             <div>
-              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Cost ({currencySymbol})</label>
+              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Cost ({currencySymbol})<span className="text-red-500 ml-0.5">*</span></label>
               <input
                 type="number"
                 required
@@ -202,23 +205,23 @@ export default function MaintenancePage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Service Date</label>
+              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Service Date<span className="text-red-500 ml-0.5">*</span></label>
               <input
                 type="date"
                 required
                 value={form.service_date}
                 onChange={(e) => setForm({ ...form, service_date: e.target.value })}
-                className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent outline-none"
-                style={{ borderColor: "var(--border)" }}
+                className={CALENDAR_CLASS}
+                style={CALENDAR_STYLE}
               />
             </div>
             <div>
-              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Status</label>
+              <label className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Status<span className="text-red-500 ml-0.5">*</span></label>
               <select
                 value={form.status}
                 onChange={(e) => setForm({ ...form, status: e.target.value })}
-                className="w-full mt-1 px-3 py-2 rounded-md border text-sm bg-transparent outline-none"
-                style={{ borderColor: "var(--border)" }}
+                className={DROPDOWN_CLASS}
+                style={DROPDOWN_STYLE}
               >
                 <option value="Active">Active (Vehicle goes In Shop)</option>
                 <option value="Completed">Completed (Already done)</option>

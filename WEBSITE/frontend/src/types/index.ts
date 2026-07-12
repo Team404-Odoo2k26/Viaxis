@@ -76,12 +76,15 @@ export interface MaintenanceLog {
 export interface FuelLog {
   id: number;
   vehicle_id: number;
+  trip_id: number | null;
   log_date: string;
   liters: number;
   cost: number;
+  source?: string;
   registration_no?: string;
   name_model?: string;
-  vehicle?: Vehicle;
+  trip_source?: string;
+  trip_destination?: string;
 }
 
 export interface Expense {

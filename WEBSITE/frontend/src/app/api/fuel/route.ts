@@ -3,10 +3,12 @@ import { query, queryOne } from "@/lib/db";
 
 export async function GET() {
   const logs = await query(`
-    SELECT f.*, v.registration_no, v.name_model
+    SELECT f.*, v.registration_no, v.name_model,
+           t.source AS trip_source, t.destination AS trip_destination
     FROM fuel_logs f
     JOIN vehicles v ON v.id = f.vehicle_id
-    ORDER BY f.log_date DESC
+    LEFT JOIN trips t ON t.id = f.trip_id
+    ORDER BY f.log_date DESC, f.created_at DESC
   `);
   return NextResponse.json(logs);
 }
