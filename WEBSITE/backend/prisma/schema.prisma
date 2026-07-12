@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── TransitOps Schema ──────────────────────────────────────────────────────
+// Entities: User, Vehicle, Driver, Trip, MaintenanceLog, FuelLog, Expense
+// All models are stubs — fields to be completed by the backend team.
+// ────────────────────────────────────────────────────────────────────────────
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   // fleet_manager | dispatcher | safety_officer | financial_analyst
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Vehicle {
+  id              Int      @id @default(autoincrement())
+  regNumber       String   @unique
+  name            String
+  type            String
+  maxLoadKg       Float
+  odometerKm      Float    @default(0)
+  acquisitionCost Float
+  status          String   @default("Available") // Available | On Trip | In Shop | Retired
+  region          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Driver {
+  id              Int      @id @default(autoincrement())
+  name            String
+  licenseNumber   String   @unique
+  licenseCategory String
+  licenseExpiry   DateTime
+  contactNumber   String
+  safetyScore     Int      @default(100)
+  status          String   @default("Available") // Available | On Trip | Off Duty | Suspended
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Trip {
+  id               Int      @id @default(autoincrement())
+  source           String
+  destination      String
+  vehicleId        Int
+  driverId         Int
+  cargoWeightKg    Float
+  plannedDistanceKm Float
+  actualDistanceKm Float?
+  status           String   @default("Draft") // Draft | Dispatched | Completed | Cancelled
+  fuelConsumedL    Float?
+  createdAt        DateTime @default(now())
+  dispatchedAt     DateTime?
+  completedAt      DateTime?
+}
+
+model MaintenanceLog {
+  id          Int      @id @default(autoincrement())
+  vehicleId   Int
+  type        String
+  description String?
+  cost        Float    @default(0)
+  startDate   DateTime
+  endDate     DateTime?
+  status      String   @default("Active") // Active | Closed
+  createdAt   DateTime @default(now())
+}
+
+model FuelLog {
+  id           Int      @id @default(autoincrement())
+  vehicleId    Int
+  tripId       Int?
+  liters       Float
+  costPerLiter Float
+  totalCost    Float
+  date         DateTime
+  odometerKm   Float?
+  createdAt    DateTime @default(now())
+}
+
+model Expense {
+  id          Int      @id @default(autoincrement())
+  vehicleId   Int
+  tripId      Int?
+  type        String   // toll | repair | other
+  amount      Float
+  description String?
+  date        DateTime
+  createdAt   DateTime @default(now())
+}
