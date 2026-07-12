@@ -8,7 +8,7 @@ echo [INFO] Checking prerequisites...
 where node >nul 2>nul
 if %ERRORLEVEL% neq 0 (
     echo.
-    echo  [31m[ERROR] Node.js is not installed or not in PATH. Please install Node.js v22+.[0m
+    echo [ERROR] Node.js is not installed or not in PATH. Please install Node.js v22+.
     exit /b 1
 )
 
@@ -16,7 +16,7 @@ if %ERRORLEVEL% neq 0 (
 where npm >nul 2>nul
 if %ERRORLEVEL% neq 0 (
     echo.
-    echo  [31m[ERROR] npm is not installed or not in PATH. Please install npm v10+.[0m
+    echo [ERROR] npm is not installed or not in PATH. Please install npm v10+.
     exit /b 1
 )
 
@@ -24,46 +24,46 @@ if %ERRORLEVEL% neq 0 (
 where psql >nul 2>nul
 if %ERRORLEVEL% neq 0 (
     echo.
-    echo  [31m[ERROR] PostgreSQL (psql command) is not installed or not in PATH. Please install PostgreSQL v16+.[0m
+    echo [ERROR] PostgreSQL - psql command - is not installed or not in PATH. Please install PostgreSQL v16+.
     exit /b 1
 )
 
-echo  [32m[SUCCESS] All prerequisites are installed![0m
+echo [SUCCESS] All prerequisites are installed!
 echo.
 
 :: Check backend .env
-if not exist "backend\.env" (
+if not exist "WEBSITE\backend\.env" (
     echo [INFO] Creating backend\.env from example...
-    copy "backend\.env.example" "backend\.env" >nul
-    echo  [33m[WARNING] backend\.env created — please update your DATABASE_URL and JWT_SECRET before starting.[0m
+    copy "WEBSITE\backend\.env.example" "WEBSITE\backend\.env" >nul
+    echo [WARNING] WEBSITE\backend\.env created — please update your DATABASE_URL and JWT_SECRET before starting.
     echo.
 )
 
 echo [INFO] Installing Backend dependencies...
-cd backend
+cd WEBSITE\backend
 call npm install
 echo [INFO] Generating Prisma Client...
 call npx prisma generate
-cd ..
+cd ..\..
 
 echo [INFO] Installing Frontend dependencies...
-cd WEBSITE
+cd WEBSITE\frontend
 call npm install
-cd ..
+cd ..\..
 
 echo.
-echo [32m=====================================[0m
-echo [32m  Setup Completed Successfully!      [0m
-echo [32m=====================================[0m
+echo =====================================
+echo   Setup Completed Successfully!      
+echo =====================================
 echo.
 
 echo [COMMANDS] To run the backend, open a terminal and run:
-echo   cd backend
+echo   cd WEBSITE\backend
 echo   npm run dev
 echo.
 
 echo [COMMANDS] To run the frontend, open a second terminal and run:
-echo   cd WEBSITE
+echo   cd WEBSITE\frontend
 echo   npm run dev
 echo.
 

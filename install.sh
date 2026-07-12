@@ -31,32 +31,32 @@ fi
 echo -e "${GREEN}✔ All prerequisites are installed!${NC}\n"
 
 # Check backend .env
-if [ ! -f "backend/.env" ]; then
-    echo -e "${YELLOW}Creating backend/.env from example...${NC}"
-    cp backend/.env.example backend/.env
-    echo -e "${YELLOW}⚠ backend/.env created — please update your DATABASE_URL and JWT_SECRET before starting.${NC}\n"
+if [ ! -f "WEBSITE/backend/.env" ]; then
+    echo -e "${YELLOW}Creating WEBSITE/backend/.env from example...${NC}"
+    cp WEBSITE/backend/.env.example WEBSITE/backend/.env
+    echo -e "${YELLOW}⚠ WEBSITE/backend/.env created — please update your DATABASE_URL and JWT_SECRET before starting.${NC}\n"
 fi
 
 echo -e "${YELLOW}Installing Backend dependencies...${NC}"
-cd backend || exit
+cd WEBSITE/backend || exit
 npm install
 echo -e "${YELLOW}Generating Prisma Client...${NC}"
 npx prisma generate
-cd ..
+cd ../..
 
 echo -e "${YELLOW}Installing Frontend dependencies...${NC}"
-cd WEBSITE || exit
+cd WEBSITE/frontend || exit
 npm install
-cd ..
+cd ../..
 
 echo -e "\n${GREEN}=====================================${NC}"
 echo -e "${GREEN}  Setup Completed Successfully! 🎉  ${NC}"
 echo -e "${GREEN}=====================================${NC}\n"
 
 echo -e "${CYAN}To run the backend, open a terminal and run:${NC}"
-echo -e "  cd backend"
+echo -e "  cd WEBSITE/backend"
 echo -e "  npm run dev\n"
 
 echo -e "${CYAN}To run the frontend, open a second terminal and run:${NC}"
-echo -e "  cd WEBSITE"
+echo -e "  cd WEBSITE/frontend"
 echo -e "  npm run dev\n"

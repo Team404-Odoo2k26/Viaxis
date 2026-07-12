@@ -16,6 +16,10 @@ This document tracks each team member's responsibilities and work done throughou
 
 ## Work Breakdown
 
+### Repository Setup & Bug Fixes *(Ahad Dangarvawala)*
+- [x] Fixed syntax errors and directory paths in `install.bat` and `install.sh`.
+- [x] Successfully ran setup scripts to install all frontend (Next.js) and backend (Express/Prisma) dependencies, and generated Prisma client.
+
 > *(To be filled in as work progresses)*
 
 ### Authentication & RBAC
