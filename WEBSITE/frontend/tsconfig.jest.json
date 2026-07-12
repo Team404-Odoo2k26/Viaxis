@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "jsx": "react-jsx",
+    "outDir": "./dist-test",
+    "rootDir": "./"
+  },
+  "include": [
+    "test/**/*.ts",
+    "test/**/*.tsx",
+    "jest.setup.ts"
+  ]
+}
